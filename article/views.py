@@ -1,3 +1,7 @@
 from django.shortcuts import render
+from django.views import generic
+from comment.models import CommentModel
 
-# Create your views here.
+
+class MainPage(generic.ListView):
+    pass

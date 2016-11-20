@@ -1,3 +1,9 @@
 from django.contrib import admin
+from .models import Article
 
-# Register your models here.
+
+class ArticleExpand(admin.ModelAdmin):
+    list_display = ('__str__', )
+
+
+admin.site.register(Article, ArticleExpand)
