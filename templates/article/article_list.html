@@ -1,0 +1,15 @@
+{% extends 'main_page/main_page_carcass.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <div class="panel-group">
+    {% for article in object_list %}
+        <div class="panel panel-default">
+            <div class="panel-heading">{{ article.title }}</div>
+            <div class="panel-body">
+                {{ article.text }}
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}

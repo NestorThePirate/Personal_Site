@@ -3,7 +3,7 @@ from .models import Article
 
 
 class ArticleExpand(admin.ModelAdmin):
-    list_display = ('__str__', )
+    list_display = ('__str__', 'title', 'user', 'created', 'edited')
 
 
 admin.site.register(Article, ArticleExpand)

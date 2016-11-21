@@ -4,6 +4,7 @@ from rating.models import RatingModel
 from mptt.models import MPTTModel, TreeForeignKey
 from django.contrib.contenttypes.fields import GenericRelation
 from django.utils import timezone
+from django.conf import settings
 
 
 class CommentModel(MPTTModel):
@@ -13,8 +14,8 @@ class CommentModel(MPTTModel):
 
     text = models.TextField()
     parent = TreeForeignKey('self', blank=True, null=True)
-    post = models.ForeignKey(Article, on_delete=models.CASCADE)
-    user = models.ForeignKey('user.CustomUser', on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     rating_object = GenericRelation(RatingModel)
 

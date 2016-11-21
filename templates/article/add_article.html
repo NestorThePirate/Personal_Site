@@ -1,0 +1,12 @@
+{% extends 'main_page/main_page_carcass.html' %}
+{% load bootstrap3 %}
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {% bootstrap_form article_form %}
+        {% bootstrap_formset tag_forms %}
+        <button class="btn btn-primary brn-md add-item" id="add-item-button">Добавить тэг</button>
+        <button type="submit" class="btn btn-primary btn-md" >Сохранить</button>
+    </form>
+{% endblock %}
