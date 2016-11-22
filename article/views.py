@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse, Http404
 from django.db.models import Q
 from django.views import generic
 from comment.models import CommentModel
@@ -6,6 +7,8 @@ from tag.models import Tag
 from .models import Article
 from .forms import ArticleForm
 from tag.forms import TagFormSet
+from comment.forms import CommentForm
+from hitcount.views import HitCountMixIn
 from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -23,10 +26,6 @@ class MainPage(generic.ListView):
                                                       Q(text__contains=request.GET['q'])
                                                       )
         return super().dispatch(request, *args, **kwargs)
-
-
-class ArticleDetails(generic.FormView):
-    pass
 
 
 class CreateArticle(generic.View):
@@ -62,3 +61,31 @@ class CreateArticle(generic.View):
         return render(request, 'article/add_article.html', {'article_form': self.article_form,
                                                             'tag_forms': self.tag_forms
                                                             })
+
+
+class ArticleDetails(HitCountMixIn, generic.FormView):
+    form_class = CommentForm
+    article = None
+    template_name = 'article/article_details.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super(ArticleDetails, self).get_context_data(**kwargs)
+        ctx['article'] = self.article
+        ctx['comments'] = self.article.get_comment_list()
+        return ctx
+
+    def dispatch(self, request, *args, **kwargs):
+        self.article = get_object_or_404(Article, pk=kwargs['article_id'])
+        self.add_hit(request, self.article.get_hit_counter())
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        new_comment = form.save(commit=False)
+        new_comment.user = self.request.user
+        parent = form['parent'].value()
+        if parent is not None:
+            new_comment.parent = CommentModel.objects.get(pk=parent)
+        new_comment.save()
+        return super().form_valid(form)
+
+

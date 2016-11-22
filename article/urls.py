@@ -11,7 +11,7 @@ urlpatterns = [
         view=views.CreateArticle.as_view(),
         name='add-article'),
 
-    url(regex='^/article/(?P<pk>[0-9]+)$',
+    url(regex='^article/(?P<article_id>[0-9]+)$',
         view=views.ArticleDetails.as_view(),
         name='article-details')
     ]

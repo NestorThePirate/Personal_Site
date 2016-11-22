@@ -2,14 +2,23 @@
 {% load staticfiles %}
 
 {% block content %}
-    <div class="panel-group">
     {% for article in object_list %}
         <div class="panel panel-default">
-            <div class="panel-heading">{{ article.title }}</div>
-            <div class="panel-body">
-                {{ article.text }}
+            <div class="panel-heading" id="main_page_header" data-id="{{ post.get_score_object_id}}">
+                <h3>{{ article.title }}</h3>
+                {{ article.created }}
+                <p><span class="glyphicon glyphicon-eye-open"></span> {{ article.get_hits }}
+                    <a href="/rate/{{ article.get_article_rating_model}}/+/"><span class="glyphicon glyphicon-thumbs-up like" data-grade="+"></span></a>
+                        <span class="total-likes">{{ article.get_likes }}</span>
+                    <a href="/rate/{{article.get_article_rating_model}}/-/"><span class="glyphicon glyphicon-thumbs-down like" data-grade="-"></span></a>
+                        <span class="total-dislikes">{{ article.get_dislikes }}</span>
+                </p>
+            </div>
+            <div class="panel-body" id="main_page_body">
+                <p>{{ article.title }}</p>
+                <button type="button" class="btn btn-primary btn-md" onclick="location.href = '{{ article.get_absolute_url }}'">Читать далее</button>
             </div>
         </div>
     {% endfor %}
-    </div>
+    <script type='text/javascript' src="{% static 'js/tag_autocomplete.js' %}"></script>
 {% endblock %}

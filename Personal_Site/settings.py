@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'user',
     'tag',
     'mptt',
+    'hitcount',
     'bootstrap3',
 ]
 
