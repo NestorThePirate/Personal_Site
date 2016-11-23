@@ -1,0 +1,28 @@
+.panel > .panel-heading{
+    border-color: #656D78;
+    background-color: #656D78;
+    color: white;
+}
+
+.panel{
+    border-color: #1AB2FF;
+    border-radius: 0;
+    background-color: #656D78;
+}
+
+.panel button{
+    background-color: #1AB2FF;
+    border-color: #1AB2FF;
+    border-radius: 0;
+}
+
+.panel button:hover,
+.panel button:focus{
+    border-color: black;
+    background-color: #1AB2FF;
+}
+
+.panel a,
+.panel{
+    color: white;
+}

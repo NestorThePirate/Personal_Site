@@ -13,8 +13,9 @@ class HitCountMixIn(object):
 
         user = request.user
         session_key = request.session.session_key
-        if user is None:
+        if user.is_anonymous:
             username = 'Anonymous'
+            user = None
         else:
             username = user.username
 
@@ -24,5 +25,4 @@ class HitCountMixIn(object):
                                         user=user,
                                         username=username)
         hit[0].save()
-        print(hit)
         hit_counter.refresh_hits()

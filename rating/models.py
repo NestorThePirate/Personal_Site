@@ -21,7 +21,7 @@ class RatingModel(models.Model):
     edited = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
-        return 'Rating model for: {0} ID: {1}'.format(self.content_type, self.content_object.id)
+        return 'Rating model for: {0} ID: {1}'.format(self.content_type, self.content_object.primary_key)
 
     def save(self, *args, **kwargs):
         self.edited = timezone.now()

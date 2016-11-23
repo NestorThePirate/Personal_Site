@@ -44,7 +44,7 @@ class Hit(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
     username = models.CharField(max_length=45)
 
-    created = models.DateTimeField(default=timezone.now())
+    created = models.DateTimeField(default=timezone.now)
 
     def save(self, *args, **kwargs):
         super(Hit, self).save(*args, **kwargs)

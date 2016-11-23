@@ -13,6 +13,7 @@ class CommentModel(MPTTModel):
         verbose_name_plural = 'Comments'
 
     text = models.TextField()
+    pretext = models.CharField(max_length=200)
     parent = TreeForeignKey('self', blank=True, null=True)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

@@ -4,6 +4,7 @@ from django.contrib.contenttypes.fields import GenericRelation
 from rating.models import RatingModel
 from hitcount.models import HitCount
 from django.conf import settings
+from django.shortcuts import reverse
 
 
 class ArticleManager(models.Manager):
@@ -13,7 +14,7 @@ class ArticleManager(models.Manager):
 
 class Article(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, unique=True)
     text = models.TextField()
 
     created = models.DateTimeField(default=timezone.now)
@@ -22,18 +23,29 @@ class Article(models.Model):
     rating_object = GenericRelation(RatingModel)
     hit_count_object = GenericRelation(HitCount)
 
+    primary_key = models.SlugField(primary_key=True,
+                                   max_length=250,
+                                   unique=True)
+
     class Meta:
         verbose_name = 'Article'
         verbose_name_plural = 'Articles'
 
     def save(self, *args, **kwargs):
         self.edited = timezone.now()
+        self.primary_key = '-'.join(''.join(l for l in word if l.isalpha()).lower() for word in self.title.split())
         super().save(*args, **kwargs)
 
     objects = ArticleManager
 
+    def get_absolute_url(self):
+        return reverse('article-details', args=[str(self.primary_key)])
+
     def get_article_rating_model(self):
         return self.rating_object.last()
+
+    def get_article_rating_model_id(self):
+        return self.rating_object.last().pk
 
     def get_article_score(self):
         return self.rating_object.last().score

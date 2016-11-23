@@ -1,10 +1,13 @@
 {% extends 'main_page/main_page_carcass.html' %}
 {% load staticfiles %}
+<head>
+    <link rel="stylesheet" href="{% static 'css/article_list.css' %}">
+</head>
 
 {% block content %}
     {% for article in object_list %}
         <div class="panel panel-default">
-            <div class="panel-heading" id="main_page_header" data-id="{{ post.get_score_object_id}}">
+            <div class="panel-heading" id="main_page_header" data-id="{{ article.get_article_rating_model}}">
                 <h3>{{ article.title }}</h3>
                 {{ article.created }}
                 <p><span class="glyphicon glyphicon-eye-open"></span> {{ article.get_hits }}
@@ -16,7 +19,7 @@
             </div>
             <div class="panel-body" id="main_page_body">
                 <p>{{ article.title }}</p>
-                <button type="button" class="btn btn-primary btn-md" onclick="location.href = '{{ article.get_absolute_url }}'">Читать далее</button>
+                <button type="submit" class="btn btn-primary btn-md" onclick="location.href = '{{ article.get_absolute_url }}'">Читать далее</button>
             </div>
         </div>
     {% endfor %}
