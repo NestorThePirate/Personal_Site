@@ -138,3 +138,5 @@ STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'user.CustomUser'
 
 READ_ONLY_FILE = os.path.join(BASE_DIR, 'readonly')
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

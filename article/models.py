@@ -16,6 +16,7 @@ class Article(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=100, unique=True)
     text = models.TextField()
+    pretext = models.TextField(max_length=200)
 
     created = models.DateTimeField(default=timezone.now)
     edited = models.DateTimeField(blank=True, null=True)
