@@ -13,5 +13,9 @@ urlpatterns = [
 
     url(regex='^article/(?P<article_pk>[-\w]+)$',
         view=views.ArticleDetails.as_view(),
-        name='article-details')
+        name='article-details'),
+
+    url(regex='^article/edit/(?P<article_pk>[-\w]+)$',
+        view=views.UpdateArticle.as_view(),
+        name='update-article'),
     ]

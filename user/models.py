@@ -37,22 +37,16 @@ class CustomUser(AbstractBaseUser):
         verbose_name='email adress',
         max_length=255,
         unique=True
-                              )
+    )
     username = models.CharField(
         verbose_name='username',
         max_length=30,
         unique=True
-                                )
-    is_active = models.BooleanField(default=False,
-                                    verbose_name='activation'
-                                    )
-    is_admin = models.BooleanField(default=False,
-                                   verbose_name='Admin permission'
-                                   )
-    registration_date = models.DateTimeField(default=timezone.now,
-                                             verbose_name='registration date'
-                                             )
-
+    )
+    is_active = models.BooleanField(default=False, verbose_name='activation')
+    is_admin = models.BooleanField(default=False, verbose_name='Admin permission')
+    registration_date = models.DateTimeField(default=timezone.now, verbose_name='registration date')
+    avatar = models.ImageField(blank=True, null=True)
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'username'

@@ -1,6 +1,7 @@
 from django import forms
 from .models import Article
 from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class SearchForm(forms.Form):
@@ -10,10 +11,19 @@ class SearchForm(forms.Form):
     )
 
 
-class ArticleForm(forms.ModelForm):
-    class Meta:
-        model = Article
-        fields = ['title', 'text', ]
-        labels = {'title': _('Title'),
-                  'text':  _('Text')
-                  }
+class ArticleForm(forms.Form):
+    title = forms.CharField()
+    text = forms.CharField(widget=forms.Textarea)
+    tag = forms.CharField()
+
+    def clean_title(self):
+        title = self.cleaned_data.get('title')
+        if len(title) < 5:
+            raise forms.ValidationError('The title is too short')
+        return title
+
+    def clean_text(self):
+        text = self.cleaned_data.get('text')
+        if len(text) < 5:
+            raise forms.ValidationError('The text is too short')
+        return text

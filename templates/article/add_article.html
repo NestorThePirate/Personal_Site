@@ -4,8 +4,7 @@
 {% block content %}
     <form action="" method="post">
         {% csrf_token %}
-        {% bootstrap_form article_form %}
-        {% bootstrap_formset tag_forms %}
+        {% bootstrap_form form %}
         <button type="submit" class="btn btn-primary btn-md" >Сохранить</button>
     </form>
     <div data-tags-input-name="tag" id="tagBox">preexisting-tag</div>

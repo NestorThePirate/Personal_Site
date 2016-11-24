@@ -46,3 +46,10 @@ class Vote(models.Model):
 
     created = models.DateTimeField(default=timezone.now)
     edited = models.DateTimeField(blank=True, null=True)
+
+    def change_like(self):
+        if self.like is True:
+            self.like = False
+        else:
+            self.like = True
+        self.save()

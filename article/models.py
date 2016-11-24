@@ -34,7 +34,7 @@ class Article(models.Model):
 
     def save(self, *args, **kwargs):
         self.edited = timezone.now()
-        self.primary_key = '-'.join(''.join(l for l in word if l.isalpha()).lower() for word in self.title.split())
+        self.primary_key = '-'.join(''.join(l for l in word if l.isalpha() or l.isdigit()).lower() for word in self.title.split())
         super().save(*args, **kwargs)
 
     objects = ArticleManager
@@ -68,3 +68,25 @@ class Article(models.Model):
 
     def get_hits(self):
         return self.hit_count_object.last().hit_set.all().count()
+
+
+class Subscription(models.Model):
+    article = models.OneToOneField(Article, on_delete=models.CASCADE)
+    subscribed_user = models.OneToOneField('user.CustomUser', on_delete=models.CASCADE)
+    updates_counter = models.SmallIntegerField(default=0)
+    watched_comments = models.SmallIntegerField(default=0)
+
+    def subscription_opened(self):
+        self.updates_counter = 0
+        self.watched_comments = len(self.article.comment_set.all())
+        self.save()
+
+    def get_updates(self):
+        self.updates_counter = len(self.article.comment_set.all()) - self.watched_comments
+        self.save()
+
+    def __str__(self):
+        return 'Subscription on {0}'.format(self.article.title)
+
+    def get_absolute_url(self):
+        return reverse('article-details', args=[self.article.primary_key])
