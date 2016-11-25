@@ -7,13 +7,13 @@
 {% block content %}
     {% for article in object_list %}
         <div class="panel panel-default">
-            <div class="panel-heading" id="main_page_header" data-id="{{ article.get_article_rating_model}}">
+            <div class="panel-heading" id="main_page_header" data-id="{{ article.get_article_rating_model_id}}">
                 <h3>{{ article.title }}</h3>
                 {{ article.created }}
                 <p><span class="glyphicon glyphicon-eye-open"></span> {{ article.get_hits }}
-                    <a href="/rate/{{ article.get_article_rating_model}}/+/"><span class="glyphicon glyphicon-thumbs-up like" data-grade="+"></span></a>
+                    <a href="/rate/{{ article.get_article_rating_model_id}}/like/"><span class="glyphicon glyphicon-thumbs-up like" data-grade="like"></span></a>
                         <span class="total-likes">{{ article.get_likes }}</span>
-                    <a href="/rate/{{article.get_article_rating_model}}/-/"><span class="glyphicon glyphicon-thumbs-down like" data-grade="-"></span></a>
+                    <a href="/rate/{{article.get_article_rating_model_id}}/dislike/"><span class="glyphicon glyphicon-thumbs-down like" data-grade="dislike"></span></a>
                         <span class="total-dislikes">{{ article.get_dislikes }}</span>
                 </p>
             </div>
@@ -23,5 +23,4 @@
             </div>
         </div>
     {% endfor %}
-    <script type='text/javascript' src="{% static 'js/tag_autocomplete.js' %}"></script>
 {% endblock %}

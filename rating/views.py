@@ -5,6 +5,12 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 def like_view(request, pk, like):
+
+    if like == 'like':
+        like = True
+    else:
+        like = False
+
     try:
         rating_model = models.RatingModel.objects.get(pk=pk)
     except ObjectDoesNotExist:
@@ -12,7 +18,7 @@ def like_view(request, pk, like):
 
     try:
         vote = models.Vote.objects.get(target=rating_model,
-                                       vote=like,
+                                       like=like,
                                        user=request.user)
         vote.delete()
     except ObjectDoesNotExist:
@@ -22,11 +28,12 @@ def like_view(request, pk, like):
             vote.change_like()
         except ObjectDoesNotExist:
             vote = models.Vote.objects.create(target=rating_model,
-                                              vote=like,
+                                              like=like,
                                               user=request.user
                                               )
             vote.save()
     rating_model.calculate_score()
+
     if request.is_ajax():
         return JsonResponse({'likes': str(rating_model.likes),
                              'dislikes': str(rating_model.dislikes)})

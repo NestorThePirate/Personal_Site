@@ -103,8 +103,9 @@ class ArticleDetails(HitCountMixIn, generic.FormView):
         new_comment = form.save(commit=False)
         new_comment.user = self.request.user
         parent_pk = form['parent'].value()
-        if parent_pk is not None:
+        if parent_pk is not '':
             new_comment.parent = CommentModel.objects.get(pk=parent_pk)
+        new_comment.article = self.article
         new_comment.save()
         return super().form_valid(form)
 

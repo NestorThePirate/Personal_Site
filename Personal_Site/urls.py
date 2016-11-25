@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'', include('user.urls')),
     url(r'', include('registration.urls')),
     url(r'', include('password.urls')),
+    url(r'', include('rating.urls')),
 ]

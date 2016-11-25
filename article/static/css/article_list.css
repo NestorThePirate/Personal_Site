@@ -26,3 +26,11 @@
 .panel{
     color: white;
 }
+
+.like:hover{
+    color: #1AB2FF;
+}
+
+.like .selected{
+    background-color: #1AB2FF;
+}

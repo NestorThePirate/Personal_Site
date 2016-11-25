@@ -1,6 +1,7 @@
 {% extends 'main_page/main_page_carcass.html' %}
 {% load staticfiles %}
 {% load mptt_tags %}
+{% load bootstrap3 %}
 
 <head>
     <link rel="stylesheet" href="{% static 'css/article_details.css' %}">
@@ -25,12 +26,15 @@
             </div>
             <div class="media-body">
                 <br>
-                <div class="panel panel-default">
+                <div class="panel panel-default" data-pk="{{ node.id }}">
                     <div class="panel-heading">
                         {{ node.user }}  {{ node.created }}
                     </div>
                     <div class="panel-body">
                         {{ node.text }}
+                    </div>
+                    <p class="answer">Ответить</p>
+                    <div class="comment_form">
                     </div>
                 </div>
                 {% if not node.is_leaf_node %}
@@ -41,4 +45,10 @@
         </div>
     {% endrecursetree%}
     </div>
+    <br>
+    <form action="" method="post" id="comment_box">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button type="submit" class="btn btn-primary btn-md answer-button">Оставить комментарий</button>
+    </form>
 {% endblock %}

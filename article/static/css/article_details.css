@@ -5,3 +5,7 @@ h2{
 .comments{
     border: #1AB2FF;
 }
+
+.comment_form{
+    display: none;
+}
