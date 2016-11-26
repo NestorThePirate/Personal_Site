@@ -2,6 +2,9 @@ from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
+from article.models import Subscription, Article
+from comment.models import CommentModel
+from tag.models import Tag
 
 
 class CustomUserManager(BaseUserManager):
@@ -71,8 +74,27 @@ class CustomUser(AbstractBaseUser):
     def is_staff(self):
         return self.is_admin
 
+    def get_user_articles(self):
+        return Article.objects.filter(user=self)
+
+    def get_user_comments(self):
+        return CommentModel.objects.filter(user=self)
+
+    def get_last_comment_created(self):
+        return self.get_user_comments().last().created
+
+    def get_user_tag(self):
+        return Tag.objects.filter(user=self)
+
     def get_user_rating(self):
         return self.userrating.rating
+
+    def get_subscriptions(self):
+        return Subscription.objects.filter(subscribed_user=self)
+
+    def update_subscriptions(self):
+        for sub in self.get_subscriptions():
+            sub.get_updates()
 
     class Meta:
         verbose_name = 'User'

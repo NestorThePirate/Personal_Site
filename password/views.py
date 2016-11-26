@@ -47,14 +47,12 @@ class SendEmailMixin(object):
 
 
 class PasswordRecoveryView(SigningMixin, SendEmailMixin, generic.FormView):
-    form = forms.PasswordRecoveryForm
+    form_class = forms.PasswordRecoveryForm
     user = None
     template_name = 'password/password_recovery.html'
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs.update({"user": None})
-        return kwargs
+    def get_success_url(self):
+        return reverse('password-recovery-sent')
 
     def form_valid(self, form):
         self.user = form.user
@@ -67,11 +65,11 @@ class PasswordReset(SigningMixin, generic.FormView):
     token = None
 
     def get_success_url(self):
-        reverse('recovery-done')
+        return reverse('login-page')
 
     def form_valid(self, form):
         user = self.get_user(self.token)
-        user.set_password(form.cleaned_data.get('password_2'))
+        user.set_password(form.cleaned_data.get('new_password_2'))
         user.save()
         return super().form_valid(form)
 
@@ -101,3 +99,7 @@ class PasswordChangeView(generic.FormView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+
+
+class PasswordRecoverySent(generic.TemplateView):
+    template_name = 'password/password_recovery_sent.html'

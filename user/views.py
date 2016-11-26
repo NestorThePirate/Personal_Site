@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.views import generic
 from django.contrib.auth import logout, login, authenticate
+from .models import CustomUser
+from article.models import Subscription, Article
+from comment.models import CommentModel
 from .forms import LoginForm
 
 
@@ -29,3 +32,28 @@ class LoginView(generic.FormView):
         if user is not None:
             login(self.request, user)
         return super().form_valid(form)
+
+
+class UserInfo(generic.TemplateView):
+    user = None
+    template_name = None
+
+    def get_template_names(self):
+        if self.user == self.request.user:
+            self.template_name = 'user/full_user_info.html'
+        else:
+            self.template_name = 'user/user_info.html'
+        return super().get_template_names()
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['articles'] = self.user.get_user_articles()
+        ctx['comments'] = self.user.get_user_comments()
+        ctx['tag'] = self.user.get_user_tag()
+        ctx['rating'] = self.user.get_user_rating()
+        return ctx
+
+    def dispatch(self, request, *args, **kwargs):
+        self.user = CustomUser.objects.get(username=kwargs['username'])
+        self.user.update_subscriptions()
+        return super().dispatch(request, *args, **kwargs)

@@ -12,6 +12,14 @@ from hitcount.views import HitCountMixIn
 from django.core.exceptions import ObjectDoesNotExist
 
 
+class AjaxResponseMixIn(object):
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        if self.request.is_ajax():
+            return JsonResponse(form.errors)
+        return response
+
+
 class MainPage(generic.ListView):
     template_name = 'article/article_list.html'
     search_list = Article.objects.all()
@@ -28,7 +36,7 @@ class MainPage(generic.ListView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class CreateArticle(generic.FormView):
+class CreateArticle(AjaxResponseMixIn, generic.FormView):
     form_class = ArticleForm
     template_name = 'article/add_article.html'
     article = None
@@ -53,7 +61,7 @@ class CreateArticle(generic.FormView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class UpdateArticle(generic.FormView):
+class UpdateArticle(AjaxResponseMixIn, generic.FormView):
     form_class = ArticleForm
     template_name = 'article/add_article.html'
     article = None
@@ -80,13 +88,18 @@ class UpdateArticle(generic.FormView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class ArticleDetails(HitCountMixIn, generic.FormView):
+class ArticleDetails(AjaxResponseMixIn, HitCountMixIn, generic.FormView):
     form_class = CommentForm
     article = None
     template_name = 'article/article_details.html'
 
     def get_success_url(self):
         return reverse('article-details', args=[str(self.article.primary_key)])
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
     def get_context_data(self, **kwargs):
         ctx = super(ArticleDetails, self).get_context_data(**kwargs)
@@ -101,13 +114,23 @@ class ArticleDetails(HitCountMixIn, generic.FormView):
 
     def form_valid(self, form):
         new_comment = form.save(commit=False)
+        new_comment.text = self.request.POST['text']
         new_comment.user = self.request.user
         parent_pk = form['parent'].value()
-        if parent_pk is not '':
+        if parent_pk is not '' and parent_pk is not None:
             new_comment.parent = CommentModel.objects.get(pk=parent_pk)
         new_comment.article = self.article
         new_comment.save()
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        if self.request.is_ajax():
+            data = {'text': new_comment.text,
+                    'user': new_comment.user.username,
+                    'created': new_comment.created,
+                    'pk': self.article.primary_key,
+                    'parent_pk': parent_pk,
+                    }
+            return JsonResponse(data)
+        return response
 
 
 class SubscriptionManagement(generic.RedirectView):

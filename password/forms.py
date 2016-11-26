@@ -8,7 +8,7 @@ class PasswordRecoveryForm(forms.Form):
     email = forms.CharField()
 
     def __init__(self, *args, **kwargs):
-        self.user = CustomUser.objects.get(email=kwargs.pop('email'))
+        self.user = None
         super().__init__(*args, **kwargs)
 
     def clean_email(self):
