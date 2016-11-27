@@ -2,9 +2,6 @@ from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
-from article.models import Subscription, Article
-from comment.models import CommentModel
-from tag.models import Tag
 
 
 class CustomUserManager(BaseUserManager):
@@ -28,7 +25,6 @@ class CustomUserManager(BaseUserManager):
             email,
             password
             )
-
         user.is_admin = True
         user.is_active = True
         user.save(using=self._db)
@@ -46,6 +42,7 @@ class CustomUser(AbstractBaseUser):
         max_length=30,
         unique=True
     )
+    username_slug = models.CharField(blank=True, null=True, max_length=30, unique=True)
     is_active = models.BooleanField(default=False, verbose_name='activation')
     is_admin = models.BooleanField(default=False, verbose_name='Admin permission')
     registration_date = models.DateTimeField(default=timezone.now, verbose_name='registration date')
@@ -54,6 +51,10 @@ class CustomUser(AbstractBaseUser):
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
+
+    def save(self, *args, **kwargs):
+        self.username_slug = self.username.lower()
+        super().save(*args, **kwargs)
 
     def get_full_name(self):
         return self.email
@@ -75,21 +76,25 @@ class CustomUser(AbstractBaseUser):
         return self.is_admin
 
     def get_user_articles(self):
+        from article.models import Article
         return Article.objects.filter(user=self)
 
     def get_user_comments(self):
+        from comment.models import CommentModel
         return CommentModel.objects.filter(user=self)
 
     def get_last_comment_created(self):
         return self.get_user_comments().last().created
 
     def get_user_tag(self):
+        from tag.models import Tag
         return Tag.objects.filter(user=self)
 
-    def get_user_rating(self):
-        return self.userrating.rating
+    def get_user_rating_object(self):
+        return self.userrating
 
     def get_subscriptions(self):
+        from article.models import Subscription
         return Subscription.objects.filter(subscribed_user=self)
 
     def update_subscriptions(self):

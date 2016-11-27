@@ -12,7 +12,6 @@ class RegistrationForm(forms.Form):
     def clean_password_2(self):
         password_1 = self.cleaned_data.get('password_1')
         password_2 = self.cleaned_data.get('password_2')
-        print(password_1, password_2)
         if len(password_1) < 5:
             raise forms.ValidationError('Пароль слишком короткий')
         if password_1 != password_2:
@@ -21,6 +20,11 @@ class RegistrationForm(forms.Form):
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
+        try:
+            CustomUser.objects.get(username_slug=username.lower())
+            raise forms.ValidationError('Данное имя пользователя уже занято')
+        except ObjectDoesNotExist:
+            pass
         if len(username) < 4:
             raise forms.ValidationError('Никнейм слишком короткий')
         return username

@@ -2,13 +2,31 @@ from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
+from user.models import CustomUser
 
 
 class UserRating(models.Model):
-    pass
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    score = models.IntegerField(default=0)
+    likes = models.IntegerField(default=0)
+    dislikes = models.IntegerField(default=0)
+
+    def get_child_rating_objects(self):
+        return self.ratingmodel_set.all()
+
+    def calculate_score(self):
+        child_rating_objects = self.get_child_rating_objects()
+        likes = child_rating_objects.aggregate(models.Sum('likes'))
+        dislikes = child_rating_objects.aggregate(models.Sum('dislikes'))
+        self.likes = likes['likes__sum']
+        self.dislikes = dislikes['dislikes__sum']
+        self.score = self.likes - self.dislikes
+        self.save()
 
 
 class RatingModel(models.Model):
+    user_rating = models.ForeignKey(UserRating, on_delete=models.CASCADE)
+
     score = models.IntegerField(default=0)
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
@@ -37,6 +55,7 @@ class RatingModel(models.Model):
 
         self.score = self.likes - self.dislikes
         self.save()
+        self.user_rating.calculate_score()
 
 
 class Vote(models.Model):

@@ -16,7 +16,8 @@ class AjaxResponseMixIn(object):
     def form_invalid(self, form):
         response = super().form_invalid(form)
         if self.request.is_ajax():
-            return JsonResponse(form.errors)
+            data = {'error': form.errors}
+            return JsonResponse(data )
         return response
 
 

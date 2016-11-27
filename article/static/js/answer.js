@@ -24,6 +24,7 @@ $(document).ready(function () {
             data: form.serialize(),
             dataType: 'json',
             success: function (response) {
+                alert(response.error);
             },
             error: function (xhr, errmsg, err) {
                 alert(xhr.status + ": " + xhr.responseText);

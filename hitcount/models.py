@@ -51,4 +51,3 @@ class Hit(models.Model):
 
     def delete(self, *args, **kwargs):
         super(Hit, self).delete(*args, **kwargs)
-

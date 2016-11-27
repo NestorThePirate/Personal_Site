@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.contrib.auth import logout, login, authenticate
 from .models import CustomUser
@@ -54,6 +54,6 @@ class UserInfo(generic.TemplateView):
         return ctx
 
     def dispatch(self, request, *args, **kwargs):
-        self.user = CustomUser.objects.get(username=kwargs['username'])
+        self.user = get_object_or_404(CustomUser, username=kwargs['username'])
         self.user.update_subscriptions()
         return super().dispatch(request, *args, **kwargs)

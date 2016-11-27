@@ -8,5 +8,8 @@ urlpatterns = [
 
     url(regex='^login/$',
         view=views.LoginView.as_view(),
-        name='login-page')
+        name='login-page'),
+    url(regex='^(?P<username>[\w]+)/user_info',
+        view=views.UserInfo.as_view(),
+        name='user-info'),
 ]
