@@ -1,4 +1,4 @@
-from django.shortcuts import render, reverse, Http404
+from django.shortcuts import get_object_or_404, reverse, Http404
 from django.core import signing
 from django.core.mail import send_mail
 from django.views import generic
@@ -22,7 +22,7 @@ class SigningMixIn(object):
 
     def activate_user(self, token):
         try:
-            user = CustomUser.objects.get(pk=signing.loads(token, salt=self.salt))
+            user = get_object_or_404(CustomUser, pk=signing.loads(token, salt=self.salt))
             user.is_active = True
             user.save()
         except signing.BadSignature:

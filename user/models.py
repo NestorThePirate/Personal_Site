@@ -33,7 +33,7 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractBaseUser):
     email = models.EmailField(
-        verbose_name='email adress',
+        verbose_name='email address',
         max_length=255,
         unique=True
     )

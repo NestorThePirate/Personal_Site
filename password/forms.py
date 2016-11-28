@@ -2,6 +2,7 @@ from django import forms
 from user.models import CustomUser
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate
+import re
 
 
 class PasswordRecoveryForm(forms.Form):

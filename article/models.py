@@ -34,7 +34,8 @@ class Article(models.Model):
 
     def save(self, *args, **kwargs):
         self.edited = timezone.now()
-        self.primary_key = '-'.join(''.join(l for l in word if l.isalpha() or l.isdigit()).lower() for word in self.title.split())
+        self.primary_key = '-'.join(''.join(l for l in word if l.isalpha() or
+                                            l.isdigit()).lower() for word in self.title.split())
         super().save(*args, **kwargs)
 
     objects = ArticleManager

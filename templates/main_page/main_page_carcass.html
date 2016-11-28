@@ -12,39 +12,16 @@
 
 </head>
 <body>
-    <div id="LoginModal" role="dialog" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Войти на сайт</h4>
-                </div>
-                <div class="modal-body">
-                    <form method="post" action="/login/">
-                        {% csrf_token %}
-                        {% bootstrap_form LOGIN_FORM %}
-                        <button type="submit" class="btn btn-primary btn-md" > Войти</button>
-                    </form>
-                    <br>
-                    <a href="/password_recover/">Забыли пароль?</a>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                </div>
-            </div>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Блог</a>
         </div>
-    </div>
-
-
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/">Блог</a>
-            </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav">
                 <li class="dropdown">
@@ -64,28 +41,25 @@
                     <li><button class="btn btn-link navbar-btn" data-toggle="modal" data-target="#LoginModal"><span class="glyphicon glyphicon-log-in"></span> Войти</button></li>
                 {% endif %}
         </div>
-        </div>
-     </nav>
-<div class="se-pre-con"></div>
-<div class="row">
-    <div class="col-sm-3">
-        <div class="panel sidebar">
-            <div class="panel-heading sidebar">
-        {% if user.is_authenticated %}
-            <h4>{{ user.username }}</h4>
-        {% endif %}
-            </div>
-        </div>
     </div>
-    <div class="col-sm-6">
+</nav>
+
+<div class="row">
+    <div class="col-sm-8">
         {% block content %}
         {% endblock %}
     </div>
-    <div class="col-sm-3">
-    {{ SEARCH_FORM }}
+    <div class="col-sm-4">
+        <div class="panel panel-default sidebar">
+            <div class="panel-heading sidebar">
+                blabla
+            </div>
+            <div class="panel-body">
+                albalb
+            </div>
+        </div>
     </div>
 
 </div>
-    <script type='text/javascript' src="{% static 'js/like_button.js' %}"></script>
-    <script type='text/javascript' src="{% static 'js/answer.js' %}"></script>
+
 </body>

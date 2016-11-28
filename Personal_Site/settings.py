@@ -73,7 +73,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'custom_tags_and_context_processors.context_processors.search_form',
                 'custom_tags_and_context_processors.context_processors.recent_articles',
-                'custom_tags_and_context_processors.context_processors.login_form'
+                'custom_tags_and_context_processors.context_processors.login_form',
+                'custom_tags_and_context_processors.context_processors.registration_form'
             ],
         },
     },

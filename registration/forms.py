@@ -1,13 +1,14 @@
 from django import forms
 from user.models import CustomUser
 from django.core.exceptions import ObjectDoesNotExist
+import re
 
 
 class RegistrationForm(forms.Form):
     username = forms.CharField(max_length=20)
     password_1 = forms.CharField(widget=forms.PasswordInput)
     password_2 = forms.CharField(widget=forms.PasswordInput)
-    email = forms.CharField()
+    email = forms.EmailField()
 
     def clean_password_2(self):
         password_1 = self.cleaned_data.get('password_1')
@@ -16,7 +17,10 @@ class RegistrationForm(forms.Form):
             raise forms.ValidationError('Пароль слишком короткий')
         if password_1 != password_2:
             raise forms.ValidationError('Пароли не совпадают')
-        return password_1
+        pattern = "^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$"
+        if not re.findall(pattern, password_1):
+            raise forms.ValidationError('Пароль слишком простой')
+        return password_2
 
     def clean_username(self):
         username = self.cleaned_data.get('username')

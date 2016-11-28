@@ -20,10 +20,15 @@ class ArticleForm(forms.Form):
         title = self.cleaned_data.get('title')
         if len(title) < 5:
             raise forms.ValidationError('The title is too short')
+        try:
+            Article.objects.get(title=title)
+            raise forms.ValidationError('Статья с таким заголовком уже существует')
+        except ObjectDoesNotExist:
+            pass
         return title
 
     def clean_text(self):
         text = self.cleaned_data.get('text')
-        if len(text) < 5:
+        if len(text) < 150:
             raise forms.ValidationError('The text is too short')
         return text

@@ -2,6 +2,7 @@ from article.forms import SearchForm
 from article.models import Article
 from django.db.models import Count
 from user.forms import LoginForm
+from registration.forms import RegistrationForm
 
 
 def search_form(request):
@@ -21,6 +22,11 @@ def recent_articles(request):
 def login_form(request):
     form = LoginForm
     return {"LOGIN_FORM": form}
+
+
+def registration_form(request):
+    form = RegistrationForm
+    return {"REGISTRATION_FORM": form}
 
 
 def tags(request):

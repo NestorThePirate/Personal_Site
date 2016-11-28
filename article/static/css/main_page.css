@@ -1,78 +1,28 @@
 body{
-   background-color: #292F33
+    background-color: #EDEDED;
 }
 
-.link{
-   background-color: #434A54
+.navbar-default,
+.col-sm-4 .panel-default{
+    background-color: white;
+    -webkit-box-shadow: 0 4px 6px -6px black;
+    -moz-box-shadow: 0 4px 6px -6px black;
+    box-shadow: 4px 4px 6px -6px black;
+    padding: 5px
 }
 
-.navbar-default{
-    background-color: #434A54;
-    border-color: #434A54;
-    border-bottom-color: #1AB2FF;
+.col-sm-4 .panel-default{
+    max-width: 400px;
 }
 
-#Loginmodal .modal-dialog .modal-content{
-    border-color: #1AB2FF;
-    border-radius: 0;
-    background-color: #434A54;
-    color: white;
+.col-sm-4 .sidebar .panel-heading,
+.col-sm-8 .article .panel-heading{
+    background-color: white;
 }
 
-#Loginmodal .modal-dialog .modal-header,
-#Loginmodal .modal-dialog .modal-footer{
-    border-color: #434A54;
-}
-
-#Loginmodal .modal-dialog .modal-footer button,
-#Loginmodal .modal-dialog .modal-content button{
-    background-color: #1AB2FF;
-    border-color: #1AB2FF;
-    border-radius: 0;
-    color: white;
-}
-
-#Loginmodal .modal-dialog .modal-footer button:hover,
-#Loginmodal .modal-dialog .modal-content button:hover,
-#Loginmodal .modal-dialog .modal-content button:focus,
-#Loginmodal .modal-dialog .modal-footer button:focus{
-   border-color: black;
-    color: white;
-}
-
-.navbar-default .navbar-brand,
-.navbar-default .navbar-nav > li > a,
-.navbar-default .navbar-nav > li > button,
-#Loginmodal .modal-dialog .modal-content a,
-.navbar-default .navbar-nav > li > a:focus,
-.navbar-default .navbar-nav > li > button:focus{
-    color: white;
-    text-decoration: none;
-}
-
-.navbar-default .navbar-brand:hover,
-.navbar-default .navbar-nav > li > a:hover,
-.navbar-default .navbar-nav > li > button:hover,
-#Loginmodal .modal-dialog .modal-content a:hover{
-    color: #1AB2FF;
-    text-decoration: none;
-}
-
-.navbar-default .navbar-collapse .navbar-nav .dropdown-menu{
-    background-color: #434A54;
-    border-color: #1AB2FF;
-    border-top-color: #434A54;
-}
-
-.navbar-default .navbar-collapse .navbar-nav .dropdown-menu > li > a{
-    color: white;
-}
-
-.navbar-default .navbar-collapse .navbar-nav .dropdown-menu > li > a:hover,
-.navbar-default .navbar-collapse .navbar-nav .dropdown-menu > li > a:focus{
-    color: #1AB2FF;
-}
-
-.navbar-default .navbar-header .navbar-toggle .icon-bar {
-    background-color: #CCC;
+.col-sm-8 .article {
+    min-height: 300px;
+    min-width: 300px;
+    max-width: 300px;
+    max-height: 300px;
 }
