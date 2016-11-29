@@ -74,7 +74,9 @@ TEMPLATES = [
                 'custom_tags_and_context_processors.context_processors.search_form',
                 'custom_tags_and_context_processors.context_processors.recent_articles',
                 'custom_tags_and_context_processors.context_processors.login_form',
-                'custom_tags_and_context_processors.context_processors.registration_form'
+                'custom_tags_and_context_processors.context_processors.registration_form',
+                'custom_tags_and_context_processors.context_processors.recent_comments',
+                'custom_tags_and_context_processors.context_processors.tags',
             ],
         },
     },

@@ -1,6 +1,8 @@
 from article.forms import SearchForm
 from article.models import Article
 from django.db.models import Count
+from comment.models import CommentModel
+from tag.models import Tag
 from user.forms import LoginForm
 from registration.forms import RegistrationForm
 
@@ -10,13 +12,14 @@ def search_form(request):
     return {"SEARCH_FORM": form}
 
 
-def popular_articles(request):
-    pass
+def recent_comments(request):
+    comments = CommentModel.objects.order_by('-created')[:5]
+    return {"RECENT_COMMENTS": comments}
 
 
 def recent_articles(request):
     articles = Article.objects.order_by('-created')[:3]
-    return {"RECENT_POSTS": articles}
+    return {"RECENT_ARTICLES": articles}
 
 
 def login_form(request):
@@ -30,4 +33,5 @@ def registration_form(request):
 
 
 def tags(request):
-    pass
+    tag_list = Tag.objects.all()
+    return {"TAG_LIST": tag_list}

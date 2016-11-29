@@ -2,16 +2,18 @@
 {% load staticfiles %}
 
 {% block content %}
-    <p>{% for article in object_list %}
-        <div class="panel panel-default article">
-            <div class="panel-heading">
-                {{ article.title }}
+    <div class="row" id="article-list">
+        {% for article in object_list %}
+            <div class="panel panel-default articles" data-pk="{{ article.primary_key }}">
+                <div class="panel-heading">
+                    <p><h3>{{ article.title }}</h3></p>
+                    {{ article.user }} {{ article.created }}
+                </div>
+                <div class="panel-body">
+                    {{ article.pretext }}
+                </div>
             </div>
+        {% endfor %}
+    </div>
 
-            <div class="panel-body">
-                {{ article.text }}
-            </div>
-
-        </div>
-    {% endfor %}
 {% endblock %}

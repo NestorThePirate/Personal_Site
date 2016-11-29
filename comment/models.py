@@ -25,6 +25,12 @@ class CommentModel(MPTTModel):
     def __str__(self):
         return 'Comment ID: {0}'.format(self.id)
 
+    def get_absolute_url(self):
+        return self.article.get_absolute_url()
+
+    def sidebar_info(self):
+        return '{0} оставил комментарий в теме {1}'.format(self.user, self.article.title)
+
     def save(self, *args, **kwargs):
         self.edited = timezone.now()
         super().save(*args, **kwargs)

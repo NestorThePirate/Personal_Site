@@ -17,6 +17,7 @@ class Article(models.Model):
     title = models.CharField(max_length=100, unique=True)
     text = models.TextField()
     pretext = models.TextField(max_length=200)
+    image = models.ImageField(blank=True, null=True)
 
     created = models.DateTimeField(default=timezone.now)
     edited = models.DateTimeField(blank=True, null=True)
@@ -36,6 +37,7 @@ class Article(models.Model):
         self.edited = timezone.now()
         self.primary_key = '-'.join(''.join(l for l in word if l.isalpha() or
                                             l.isdigit()).lower() for word in self.title.split())
+        self.pretext = self.text[:200]
         super().save(*args, **kwargs)
 
     objects = ArticleManager

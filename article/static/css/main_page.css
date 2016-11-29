@@ -3,7 +3,8 @@ body{
 }
 
 .navbar-default,
-.col-sm-4 .panel-default{
+.col-sm-4 .panel-default,
+.col-sm-8 #article-list .articles{
     background-color: white;
     -webkit-box-shadow: 0 4px 6px -6px black;
     -moz-box-shadow: 0 4px 6px -6px black;
@@ -12,7 +13,8 @@ body{
 }
 
 .col-sm-4 .panel-default{
-    max-width: 400px;
+    max-width: 300px;
+    min-width: 280px;
 }
 
 .col-sm-4 .sidebar .panel-heading,
@@ -20,9 +22,27 @@ body{
     background-color: white;
 }
 
-.col-sm-8 .article {
-    min-height: 300px;
-    min-width: 300px;
-    max-width: 300px;
-    max-height: 300px;
+.col-sm-8 #article-list .articles{
+    width: 300px;
+    height: 300px;
+    display: inline-block;
+    vertical-align: text-top;
+    float: right;
+    animation: fadein 1.3s;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.col-sm-8 #article-list .articles .panel-heading{
+    text-align: center;
+    background-color: white;
+}
+
+.col-sm-4 .sidebar .panel-heading{
+    text-align: center;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
