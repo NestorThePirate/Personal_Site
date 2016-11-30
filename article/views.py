@@ -17,16 +17,19 @@ class AjaxResponseMixIn(object):
         response = super().form_invalid(form)
         if self.request.is_ajax():
             data = {'error': form.errors}
-            return JsonResponse(data )
+            return JsonResponse(data)
         return response
 
 
 class MainPage(generic.ListView):
     template_name = 'article/article_list.html'
     search_list = Article.objects.all()
-    paginate_by = 10
+    tag = None
+    paginate_by = 9
 
     def get_queryset(self):
+        if self.tag:
+            return Tag.get_articles_by_tag(self.tag)
         return self.search_list
 
     def dispatch(self, request, *args, **kwargs):
@@ -34,6 +37,8 @@ class MainPage(generic.ListView):
             self.search_list = Article.objects.filter(Q(title__contains=request.GET['q']) |
                                                       Q(text__contains=request.GET['q'])
                                                       )
+        if 'tag' in kwargs:
+            self.tag = kwargs['tag']
         return super().dispatch(request, *args, **kwargs)
 
 

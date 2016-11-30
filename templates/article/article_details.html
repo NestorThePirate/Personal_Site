@@ -8,9 +8,17 @@
 </head>
 
 {% block content %}
-    <div class="container">
-    <div class="panel panel-default details">
-        {{ article.text }}
-    </div>
-    </div>
+        <div class="panel panel-default article-details">
+            <div class="panel-heading">
+                <h2 class="article-title">{{ article.title }}</h2>
+            </div>
+            <div class="panel-body">
+                {{ article.text }}
+            </div>
+            <div class="panel-footer">
+                {{ article.created }}
+                {{ article.get_hits }}
+
+            </div>
+        </div>
 {% endblock %}

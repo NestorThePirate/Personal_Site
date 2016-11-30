@@ -18,4 +18,15 @@ class Tag(models.Model):
 
     def save(self, *args, **kwargs):
         self.edited = timezone.now()
+        self.kill_childless_tags()
         super().save(*args, **kwargs)
+
+    @staticmethod
+    def get_articles_by_tag(tag):
+        return Tag.objects.get(tag=tag).article.all()
+
+    @staticmethod
+    def kill_childless_tags():
+        childless_tags = Tag.objects.filter(article=None)
+        for childless_tag in childless_tags:
+            childless_tag.delete()

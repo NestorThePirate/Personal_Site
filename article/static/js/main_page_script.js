@@ -2,8 +2,7 @@ $(document).ready(function () {
     var article_list = $('#article-list');
 
     article_list.on('mouseenter', '.articles', function () {
-        $(this).css('color', 'green');
-        $(this).find('.panel-heading').css('color', 'green');
+        $(this).find('.panel-heading').css('color', '#1AB2FF');
     });
     article_list.on('mouseleave', '.articles', function () {
         $(this).css('color', 'black');

@@ -18,4 +18,8 @@ urlpatterns = [
     url(regex='^article/edit/(?P<article_pk>[-\w]+)$',
         view=views.UpdateArticle.as_view(),
         name='update-article'),
+
+    url(regex='^filter/tag/(?P<tag>[-\w ]+)/$',
+        view=views.MainPage.as_view(),
+        name='article-list'),
     ]

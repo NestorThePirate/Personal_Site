@@ -1,11 +1,28 @@
-h2{
-    color: white;
+.article-details .panel-heading .article-title{
+    text-align: center;
 }
 
-.comments{
-    border: #1AB2FF;
+.article-details .panel-heading,
+.article-details .panel-footer{
+    background-color: white;
 }
 
-.comment_form{
-    display: none;
+.article-details .panel-body{
+}
+
+.article-details{
+    margin-top: 6px;
+    border-radius: 0;
+    animation: fadein 1.3s;
+    background-color: white;
+    -webkit-box-shadow: 0 4px 6px -6px black;
+    -moz-box-shadow: 0 4px 6px -6px black;
+    box-shadow: 4px 4px 6px -6px black;
+    padding: 5px
+
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
