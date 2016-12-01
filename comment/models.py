@@ -34,6 +34,8 @@ class CommentModel(MPTTModel):
     def save(self, *args, **kwargs):
         self.edited = timezone.now()
         super().save(*args, **kwargs)
+        if self.parent and self.parent.article != self.article:
+            raise KeyError('У комментария и у родительского комментария разные артикли')
 
     def get_score(self):
         return self.rating_object.last().score

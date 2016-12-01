@@ -1,1 +1,27 @@
-.col-sm-8 .panel-default .
+.col-sm-6 .pagination .button_right{
+    position: fixed;
+    top: 50%;
+    right: 150px;
+    text-decoration: none;
+    color: black;
+    font-size: 1.7em;
+    opacity: 0.3;
+
+}
+
+.col-sm-6 .pagination .button_left{
+
+    position: fixed;
+    top: 50%;
+    left: 150px;
+    text-decoration: none;
+    color: black;
+    font-size: 1.7em;
+    opacity: 0.3;
+
+}
+
+.col-sm-6 .pagination .button_left:hover,
+.col-sm-6 .pagination .button_right:hover{
+    opacity: 1;
+}

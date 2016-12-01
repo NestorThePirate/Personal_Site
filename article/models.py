@@ -28,7 +28,6 @@ class Article(models.Model):
     primary_key = models.SlugField(primary_key=True,
                                    max_length=250,
                                    unique=True)
-
     class Meta:
         verbose_name = 'Article'
         verbose_name_plural = 'Articles'
@@ -41,6 +40,9 @@ class Article(models.Model):
         super().save(*args, **kwargs)
 
     objects = ArticleManager
+
+    def __str__(self):
+        return 'Article PK67{0}'.format(self.primary_key)
 
     def get_absolute_url(self):
         return reverse('article-details', args=[str(self.primary_key)])

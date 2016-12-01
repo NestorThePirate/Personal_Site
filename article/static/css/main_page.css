@@ -4,6 +4,7 @@ html {
 
 body{
     background-color: #EDEDED;
+    font-family: 'Garamond';
 }
 
 
@@ -14,7 +15,7 @@ body{
     -webkit-box-shadow: 0 4px 6px -6px black;
     -moz-box-shadow: 0 4px 6px -6px black;
     box-shadow: 4px 4px 6px -6px black;
-    padding: 5px
+    padding: 5px;
 }
 
 .col-sm-2 .panel-default{
@@ -29,7 +30,9 @@ body{
 
 .col-sm-6 #article-list .articles{
     width: 300px;
+    max-width: 300px;
     height: 320px;
+    max-height: 320px;
     display: inline-block;
     vertical-align: text-top;
     float: right;
@@ -37,6 +40,7 @@ body{
     cursor: pointer;
     margin: 6px;
     border-radius: 0;
+    word-wrap: break-word;
 }
 
 .col-sm-6 #article-list .articles .panel-heading{
@@ -59,6 +63,15 @@ body{
     list-style-type: none;
 }
 
+.col-sm-2 .sidebar .panel-body .recent_comments li a{
+    text-decoration: none;
+    color: black;
+}
+
+.col-sm-2 .sidebar .panel-body .recent_comments li a:hover{
+    color: #1AB2FF;
+}
+
 .col-sm-2 .sidebar .panel-body .sidebar-tag{
     margin-top: 4px;
     border-radius: 0;
@@ -70,10 +83,4 @@ body{
 .col-sm-2 .sidebar .panel-body .sidebar-tag:hover{
     color: white;
     background-color: #1AB2FF;
-}
-
-.col-sm-6{
-}
-
-.col-sm-2{
 }
