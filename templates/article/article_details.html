@@ -8,7 +8,8 @@
 </head>
 
 {% block content %}
-        <div class="panel panel-default article-details" data-id="{{ article.get_article_rating_model_id }}">
+        <div class="panel panel-default article-details" data-id="{{ article.get_article_rating_model_id }}"
+                                                         data-obj-id="{{ article.primary_key }}">
             <div class="panel-heading">
                 <h2 class="article-title">{{ article.title }}</h2>
             </div>
@@ -34,17 +35,17 @@
 {% load mptt_tags %}
     <ul id="comments-section">
         {% recursetree comments %}
-            <li>
+            <li class="comment" data-comment-id="{{ node.pk }}">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         {{ node.user }} {{ node.created }}
+                        <span class="delete-comment"><a href="/comment/delete/{{ node.pk }}">X</a> </span>
                     </div>
                     <div class="panel-body">
                         {{ node.text }}
                     </div>
                     <div class="panel-footer">
                         <button type="submit" class="btn btn-primary btn-sm comment-answer">Ответить</button>
-
                     </div>
                 </div>
 
@@ -57,11 +58,14 @@
         {% endrecursetree %}
     </ul>
 
+    <div id="comment-form">
+        <div id="errors-list" hidden="true">
 
+        </div>
     <form action="" method="post" class="answer-form">
         {% csrf_token %}
         {% bootstrap_form form %}
-        <button type="submit" class="btn btn-primary btn-sm comment-answer">Ответить</button>
+        <button type="submit" class="btn btn-primary btn-sm answer-submit">Ответить</button>
     </form>
-
+    </div>
 {% endblock %}

@@ -22,4 +22,8 @@ urlpatterns = [
     url(regex='^filter/tag/(?P<tag>[-\w ]+)/$',
         view=views.MainPage.as_view(),
         name='article-list'),
+
+    url(regex='^comment/delete/(?P<pk>[0-9]+)$',
+        view=views.delete_comment,
+        name='delete-comment')
     ]

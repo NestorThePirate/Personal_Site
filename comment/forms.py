@@ -9,6 +9,12 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = CommentModel
         fields = ('text', )
+        help_texts = {
+            'text': 'Оставить сообщение',
+        }
+        labels = {
+            'text': '',
+        }
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
@@ -16,12 +22,6 @@ class CommentForm(forms.ModelForm):
 
     def clean_text(self):
         text = self.cleaned_data.get('text')
-        try:
-            time_block = timezone.now().minute - self.user.get_last_comment_created().minute
-            print(time_block)
-            if time_block < 1:
-                raise forms.ValidationError('Вы оставляете сообщения слишком быстро')
-        except AttributeError:
-            pass
-
+        if len(text) <= 1:
+            raise forms.ValidationError('текст слишком короткий')
         return text

@@ -63,3 +63,18 @@
     background-color: #1AB2FF;
     color: white;
 }
+
+.answer-form .answer-submit{
+    border-radius: 0;
+    background-color: #1AB2FF;
+    border-color: #1AB2FF;
+}
+
+.answer-form .answer-submit:hover{
+    border-color: black;
+}
+
+#errors-list{
+    color: red;
+}
+

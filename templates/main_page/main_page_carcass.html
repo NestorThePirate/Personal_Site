@@ -37,8 +37,10 @@
                     <li><a href="/logout/"><span class="glyphicon glyphicon-log-out"></span> Выйти</a></li>
                     </ul>
                     {% else %}
-                    <li><button class="btn btn-link navbar-btn" data-toggle="modal" data-target="#RegistrationModal"><span class="glyphicon glyphicon-user"></span> Регистрация</button></li>
-                    <li><button class="btn btn-link navbar-btn" data-toggle="modal" data-target="#LoginModal"><span class="glyphicon glyphicon-log-in"></span> Войти</button></li>
+                    <li><button class="btn btn-link navbar-btn" data-toggle="modal" data-target="#RegistrationModal">
+                        <span class="glyphicon glyphicon-user"></span> Регистрация</button></li>
+                    <li><button class="btn btn-link navbar-btn" data-toggle="modal" data-target="#LoginModal">
+                        <span class="glyphicon glyphicon-log-in"></span> Войти</button></li>
                 {% endif %}
         </div>
     </div>
@@ -81,5 +83,5 @@
 
      <script type='text/javascript' src="{% static 'js/main_page_script.js' %}"></script>
      <script type='text/javascript' src="{% static 'js/like_button.js' %}"></script>
-     <script type="text/javascript" src="{% static 'js/tiny_mce.js' %}"></script>
+     <script type="text/javascript" src="{% static 'js/article_details.js' %}"></script>
 </body>

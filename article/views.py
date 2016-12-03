@@ -133,8 +133,9 @@ class ArticleDetails(AjaxResponseMixIn, HitCountMixIn, generic.FormView):
                     'user': new_comment.user.username,
                     'created': new_comment.created,
                     'pk': self.article.primary_key,
-                    'parent_pk': parent_pk,
                     }
+            if parent_pk:
+                data.update({'parent_pk': parent_pk})
             return JsonResponse(data)
         return response
 
@@ -164,3 +165,13 @@ class SubscriptionManagement(generic.RedirectView):
                                                        )
             subscription.save()
         return super().dispatch(request, *args, **kwargs)
+
+
+def delete_comment(request, pk):
+    comment = CommentModel.objects.get(pk=pk)
+    url = reverse('article-details', args=[comment.article.primary_key])
+    comment.delete()
+    if request.is_ajax():
+        return JsonResponse({'text':'сообщение успешно удалено'})
+    else:
+        return url
