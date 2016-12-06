@@ -5,8 +5,8 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(label='Имя пользователя')
+    password = forms.CharField(widget=forms.PasswordInput, label='Пароль')
 
     def clean_username(self):
         username = self.cleaned_data.get('username')
@@ -15,6 +15,3 @@ class LoginForm(forms.Form):
         except ObjectDoesNotExist:
             raise forms.ValidationError("The user doesn't exist or is not activated")
         return username
-
-
-

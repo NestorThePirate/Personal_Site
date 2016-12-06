@@ -25,5 +25,17 @@ urlpatterns = [
 
     url(regex='^comment/delete/(?P<pk>[0-9]+)$',
         view=views.delete_comment,
-        name='delete-comment')
+        name='delete-comment'),
+
+    url(regex='^contacts/$',
+        view=views.Contacts.as_view(),
+        name='contacts'),
+
+    url(regex='^about/$',
+        view=views.SiteInfo.as_view(),
+        name='site-info'),
+
+    url(regex='^subscribe/(?P<primary_key>[-\w ]+)$',
+        view=views.SubscriptionManagement.as_view(),
+        name='subscribe')
     ]

@@ -16,13 +16,23 @@ class ArticleForm(forms.Form):
     text = forms.CharField(widget=forms.Textarea)
     tag = forms.CharField()
 
+    def __init__(self, *args, **kwargs):
+        try:
+            self.article = kwargs.pop('article')
+        except KeyError:
+            pass
+        super().__init__(*args, **kwargs)
+
     def clean_title(self):
         title = self.cleaned_data.get('title')
         if len(title) < 5:
             raise forms.ValidationError('The title is too short')
         try:
             Article.objects.get(title=title)
-            raise forms.ValidationError('Статья с таким заголовком уже существует')
+            if self.article is not None:
+                pass
+            else:
+                raise forms.ValidationError('Статья с таким заголовком уже существует')
         except ObjectDoesNotExist:
             pass
         return title

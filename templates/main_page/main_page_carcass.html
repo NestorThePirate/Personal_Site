@@ -9,9 +9,11 @@
     <link rel="stylesheet" href="{% static 'css/main_page.css' %}">
     <link rel="stylesheet" href="{% static 'css/article_list.css' %}">
     <link rel="stylesheet" href="{% static 'css/article_details.css' %}">
+    <link rel="stylesheet" href="{% static 'css/user_info.css' %}">
 
 </head>
 <body>
+
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -33,14 +35,14 @@
                 </li>
                 {% if user.is_authenticated %}
                     <li><a href="/add_article/">Создать пост</a></li>
-                    <li><a href="#">Личный кабинет</a></li>
+                    <li><a href="/{{ user.username }}/user_info">Личный кабинет</a></li>
                     <li><a href="/logout/"><span class="glyphicon glyphicon-log-out"></span> Выйти</a></li>
                     </ul>
                     {% else %}
-                    <li><button class="btn btn-link navbar-btn" data-toggle="modal" data-target="#RegistrationModal">
-                        <span class="glyphicon glyphicon-user"></span> Регистрация</button></li>
-                    <li><button class="btn btn-link navbar-btn" data-toggle="modal" data-target="#LoginModal">
-                        <span class="glyphicon glyphicon-log-in"></span> Войти</button></li>
+                    <li><a href="/registration/">
+                        <span class="glyphicon glyphicon-user"></span> Регистрация</a></li>
+                    <li><a href="/login/">
+                        <span class="glyphicon glyphicon-log-in"></span> Войти</a></li>
                 {% endif %}
         </div>
     </div>
@@ -84,4 +86,6 @@
      <script type='text/javascript' src="{% static 'js/main_page_script.js' %}"></script>
      <script type='text/javascript' src="{% static 'js/like_button.js' %}"></script>
      <script type="text/javascript" src="{% static 'js/article_details.js' %}"></script>
+     <script type="text/javascript" src="{% static 'js/modal_window_handler.js' %}"></script>
+
 </body>

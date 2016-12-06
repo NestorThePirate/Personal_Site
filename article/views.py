@@ -6,7 +6,6 @@ from comment.models import CommentModel
 from tag.models import Tag
 from .models import Article, Subscription
 from .forms import ArticleForm
-from tag.forms import TagFormSet
 from comment.forms import CommentForm
 from hitcount.views import HitCountMixIn
 from django.core.exceptions import ObjectDoesNotExist
@@ -42,6 +41,14 @@ class MainPage(generic.ListView):
         return super().dispatch(request, *args, **kwargs)
 
 
+class SiteInfo(generic.TemplateView):
+    template_name = 'main_page/info.html'
+
+
+class Contacts(generic.TemplateView):
+    template_name = 'main_page/contacts.html'
+
+
 class CreateArticle(AjaxResponseMixIn, generic.FormView):
     form_class = ArticleForm
     template_name = 'article/add_article.html'
@@ -55,10 +62,14 @@ class CreateArticle(AjaxResponseMixIn, generic.FormView):
                                               title=form.cleaned_data.get('title'),
                                               text=form.cleaned_data.get('text'))
         self.article.save()
-        new_tag = Tag.objects.create(tag=form.cleaned_data.get('tag'),
-                                     user=self.request.user)
-        new_tag.save()
-        new_tag.article.add(self.article)
+        try:
+            tag = Tag.objects.get(tag=form.cleaned_data.get('tag'))
+            tag.article.add(self.article)
+        except ObjectDoesNotExist:
+            new_tag = Tag.objects.create(tag=form.cleaned_data.get('tag'),
+                                         user=self.request.user)
+            new_tag.save()
+            new_tag.article.add(self.article)
         return super().form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
@@ -76,6 +87,11 @@ class UpdateArticle(AjaxResponseMixIn, generic.FormView):
     def get_success_url(self):
         return reverse('article-details', args=[self.article.primary_key])
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['article'] = self.article
+        return kwargs
+
     def get_initial(self):
         initial = super().get_initial()
         initial['title'] = self.article.title
@@ -84,19 +100,32 @@ class UpdateArticle(AjaxResponseMixIn, generic.FormView):
         return initial
 
     def form_valid(self, form):
+        self.article.text = form.cleaned_data.get('text')
+        self.article.title = form.cleaned_data.get('title')
         self.article.save()
+        if self.tag is None:
+            self.tag = Tag.objects.create(tag=form.cleaned_data.get('tag'),
+                                          user=self.request.user)
+            self.tag.article.add(self.article)
+        else:
+            self.tag.tag = form.cleaned_data.get('tag')
         self.tag.save()
+
         return super().form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
         self.article = Article.objects.get(primary_key=kwargs['article_pk'])
-        self.tag = Tag.objects.get(article=self.article)
+        try:
+            self.tag = Tag.objects.get(article=self.article)
+        except ObjectDoesNotExist:
+            self.tag = None
         return super().dispatch(request, *args, **kwargs)
 
 
 class ArticleDetails(AjaxResponseMixIn, HitCountMixIn, generic.FormView):
     form_class = CommentForm
     article = None
+    subscription = None
     template_name = 'article/article_details.html'
 
     def get_success_url(self):
@@ -116,9 +145,18 @@ class ArticleDetails(AjaxResponseMixIn, HitCountMixIn, generic.FormView):
     def dispatch(self, request, *args, **kwargs):
         self.article = get_object_or_404(Article, pk=kwargs['article_pk'])
         self.add_hit(request, self.article.get_hit_counter())
+        try:
+            self.subscription = Subscription.objects.get(subscribed_user=self.request.user,
+                                                         article=self.article)
+            self.subscription.subscription_opened()
+        except ObjectDoesNotExist:
+            pass
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
+        if self.request.user.is_anonymous():
+            raise Http404
+
         new_comment = form.save(commit=False)
         new_comment.text = self.request.POST['text']
         new_comment.user = self.request.user
@@ -136,6 +174,8 @@ class ArticleDetails(AjaxResponseMixIn, HitCountMixIn, generic.FormView):
                     }
             if parent_pk:
                 data.update({'parent_pk': parent_pk})
+            if self.subscription:
+                self.subscription.subscription_opened()
             return JsonResponse(data)
         return response
 
@@ -149,7 +189,7 @@ class SubscriptionManagement(generic.RedirectView):
 
     def dispatch(self, request, *args, **kwargs):
         self.article = get_object_or_404(Article, primary_key=kwargs['primary_key'])
-        self.user = request.user
+        self.user = self.request.user
         if self.user is None:
             return self.get_redirect_url(*args, **kwargs)
 

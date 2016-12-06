@@ -27,6 +27,11 @@
                         <span class="glyphicon glyphicon-thumbs-down like" data-grade="dislike"></span></a>
                     <span class="total-dislikes">{{ article.get_dislikes }}</span>
                 </div>
+                {% if article in user.get_subscription_articles %}
+                    <a href="/subscribe/{{ article.primary_key }}">Отписаться</a>
+                {% else %}
+                    <a href="/subscribe/{{ article.primary_key }}">Подписаться</a>
+                {% endif %}
             </div>
         </div>
     <br>
@@ -38,6 +43,7 @@
             <li class="comment" data-comment-id="{{ node.pk }}">
                 <div class="panel panel-default">
                     <div class="panel-heading">
+                        <a href="#" title="Dismissible popover" data-toggle="popover" data-trigger="focus" data-content="Click anywhere in the document to close this popover">Click me</a>
                         {{ node.user }} {{ node.created }}
                         <span class="delete-comment"><a href="/comment/delete/{{ node.pk }}">X</a> </span>
                     </div>
@@ -57,7 +63,7 @@
             </li>
         {% endrecursetree %}
     </ul>
-
+    {% if user.is_authenticated %}
     <div id="comment-form">
         <div id="errors-list" hidden="true">
 
@@ -68,4 +74,7 @@
         <button type="submit" class="btn btn-primary btn-sm answer-submit">Ответить</button>
     </form>
     </div>
+    {% else %}
+        <p>Войдите на свою учетную запись для оставления комментария</p>
+    {% endif %}
 {% endblock %}

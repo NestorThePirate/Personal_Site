@@ -6,7 +6,7 @@ import re
 
 
 class PasswordRecoveryForm(forms.Form):
-    email = forms.CharField()
+    email = forms.CharField(label='Введите электронный адрес')
 
     def __init__(self, *args, **kwargs):
         self.user = None
@@ -17,13 +17,13 @@ class PasswordRecoveryForm(forms.Form):
         try:
             self.user = CustomUser.objects.get(email=email)
         except ObjectDoesNotExist:
-            raise forms.ValidationError('Такой почты нема')
+            raise forms.ValidationError('Такая почта не зарегистрирована')
         return email
 
 
 class PasswordResetForm(forms.Form):
-    new_password_1 = forms.CharField(widget=forms.PasswordInput)
-    new_password_2 = forms.CharField(widget=forms.PasswordInput)
+    new_password_1 = forms.CharField(widget=forms.PasswordInput, label='Новый пароль')
+    new_password_2 = forms.CharField(widget=forms.PasswordInput, label='Повторите пароль')
 
     def clean_new_password_2(self):
         new_password_1 = self.cleaned_data.get('new_password_1')
@@ -36,9 +36,9 @@ class PasswordResetForm(forms.Form):
 
 
 class PasswordChangeForm(forms.Form):
-    old_password = forms.CharField(widget=forms.PasswordInput)
-    new_password_1 = forms.CharField(widget=forms.PasswordInput)
-    new_password_2 = forms.CharField(widget=forms.PasswordInput)
+    old_password = forms.CharField(widget=forms.PasswordInput, label='Старый пароль')
+    new_password_1 = forms.CharField(widget=forms.PasswordInput, label='Новый пароль')
+    new_password_2 = forms.CharField(widget=forms.PasswordInput, label='Повторите пароль')
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')

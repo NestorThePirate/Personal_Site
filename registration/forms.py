@@ -5,10 +5,10 @@ import re
 
 
 class RegistrationForm(forms.Form):
-    username = forms.CharField(max_length=20)
-    password_1 = forms.CharField(widget=forms.PasswordInput)
-    password_2 = forms.CharField(widget=forms.PasswordInput)
-    email = forms.EmailField()
+    username = forms.CharField(max_length=20, label='Имя пользователя')
+    password_1 = forms.CharField(widget=forms.PasswordInput, label='Пароль')
+    password_2 = forms.CharField(widget=forms.PasswordInput, label='Подтверждение пароля')
+    email = forms.EmailField(label='Электронный адрес')
 
     def clean_password_2(self):
         password_1 = self.cleaned_data.get('password_1')
@@ -44,7 +44,7 @@ class RegistrationForm(forms.Form):
 
 
 class TokenResendForm(forms.Form):
-    email_or_username = forms.CharField()
+    email_or_username = forms.CharField(label='Имя пользователя или электронный адрес')
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')

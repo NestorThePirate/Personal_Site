@@ -9,7 +9,7 @@ $(document).ready(function () {
    $(document).on('click', '.comment-answer', function (e) {
        e.preventDefault();
        if ($(this).text() == 'Отмена'){
-           $(this).parent().find('.answer-form').hide();
+           $(this).parent().find('#comment-form').remove();
            $(this).html('Ответить');
        }
        else{
@@ -42,10 +42,11 @@ $(document).ready(function () {
                         panel_default.append(panel_heading).append(panel_body).append(panel_footer);
                         comment.append(panel_default);
                         if ('parent_pk' in response){
-                            $("li[data-comment-id='" + response.parent +"']").append('<ul class=children' + comment + '</ul');
+                            $("li[data-comment-id='" + response.parent +"']").append('<ul class=children>' + comment + '</ul>');
                         }
                         else{
                             $('#comments-section').append(comment);
+                            form.trigger('reset');
                         }
 
                     }

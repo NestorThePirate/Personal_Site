@@ -1,9 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.views import generic
 from django.contrib.auth import logout, login, authenticate
 from .models import CustomUser
-from article.models import Subscription, Article
-from comment.models import CommentModel
 from .forms import LoginForm
 
 
@@ -32,6 +30,11 @@ class LoginView(generic.FormView):
         if user is not None:
             login(self.request, user)
         return super().form_valid(form)
+
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated():
+            return redirect(reverse('article-list'))
+        return super().dispatch(request, *args, **kwargs)
 
 
 class UserInfo(generic.TemplateView):

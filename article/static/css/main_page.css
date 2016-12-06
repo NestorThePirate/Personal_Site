@@ -1,12 +1,12 @@
 html {
     overflow-y: scroll;
+    height: 100%;
 }
 
 body{
     background-color: #EDEDED;
     font-family: 'Garamond';
 }
-
 
 .navbar-default,
 .col-sm-2 .panel-default,
@@ -72,7 +72,9 @@ body{
     color: #1AB2FF;
 }
 
-.col-sm-2 .sidebar .panel-body .sidebar-tag{
+.col-sm-2 .sidebar .panel-body .sidebar-tag,
+#LoginModal .modal-dialog .modal-content .login-confirm,
+#RegistrationModal .modal-dialog .modal-content .registration-confirm{
     margin-top: 4px;
     border-radius: 0;
     background-color: #EDEDED;
@@ -80,7 +82,9 @@ body{
     color: black;
 }
 
-.col-sm-2 .sidebar .panel-body .sidebar-tag:hover{
+.col-sm-2 .sidebar .panel-body .sidebar-tag:hover,
+#LoginModal .modal-dialog .modal-content .login-confirm:hover,
+#RegistrationModal .modal-dialog .modal-content .registration-confirm:hover{
     color: white;
     background-color: #1AB2FF;
 }

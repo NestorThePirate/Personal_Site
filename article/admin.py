@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Article
+from .models import Article, Subscription
 
 
 class ArticleExpand(admin.ModelAdmin):
@@ -7,3 +7,5 @@ class ArticleExpand(admin.ModelAdmin):
 
 
 admin.site.register(Article, ArticleExpand)
+admin.site.register(Subscription)
+

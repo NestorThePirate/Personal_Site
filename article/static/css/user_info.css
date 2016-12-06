@@ -1,0 +1,12 @@
+.user-info{
+    background-color: white;
+    -webkit-box-shadow: 0 4px 6px -6px black;
+    -moz-box-shadow: 0 4px 6px -6px black;
+    box-shadow: 4px 4px 6px -6px black;
+    padding: 5px;
+}
+
+.user-info .panel-heading,
+.user-info .panel-footer{
+    background-color: white;
+}

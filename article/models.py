@@ -28,6 +28,7 @@ class Article(models.Model):
     primary_key = models.SlugField(primary_key=True,
                                    max_length=250,
                                    unique=True)
+
     class Meta:
         verbose_name = 'Article'
         verbose_name_plural = 'Articles'
@@ -42,7 +43,10 @@ class Article(models.Model):
     objects = ArticleManager
 
     def __str__(self):
-        return 'Article PK67{0}'.format(self.primary_key)
+        return 'Article PK: {0}'.format(self.primary_key)
+
+    def sidebar_info(self):
+        return 'Тема: {0} {1}'.format(self.title, self.created)
 
     def get_absolute_url(self):
         return reverse('article-details', args=[str(self.primary_key)])
@@ -83,11 +87,11 @@ class Subscription(models.Model):
 
     def subscription_opened(self):
         self.updates_counter = 0
-        self.watched_comments = len(self.article.comment_set.all())
+        self.watched_comments = len(self.article.commentmodel_set.all())
         self.save()
 
     def get_updates(self):
-        self.updates_counter = len(self.article.comment_set.all()) - self.watched_comments
+        self.updates_counter = len(self.article.commentmodel_set.all()) - self.watched_comments
         self.save()
 
     def __str__(self):

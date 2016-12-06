@@ -2,6 +2,7 @@ from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import timezone
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
+from django.conf import settings
 
 
 class CustomUserManager(BaseUserManager):
@@ -93,13 +94,43 @@ class CustomUser(AbstractBaseUser):
     def get_user_rating_object(self):
         return self.userrating
 
+    def get_user_likes(self):
+        return self.get_user_rating_object().likes
+
+    def get_user_dislikes(self):
+        return self.get_user_rating_object().dislikes
+
+    def get_user_rating(self):
+        return self.userrating.score
+
     def get_subscriptions(self):
         from article.models import Subscription
         return Subscription.objects.filter(subscribed_user=self)
 
+    def get_subscription_articles(self):
+        articles = []
+        for s in self.get_subscriptions():
+            articles.append(s.article)
+        return articles
+
     def update_subscriptions(self):
         for sub in self.get_subscriptions():
             sub.get_updates()
+
+    def get_previous_comments(self):
+        from comment.models import CommentModel
+        return CommentModel.objects.filter(user=self)[:5]
+
+    def get_previous_articles(self):
+        from article.models import Article
+        return Article.objects.filter(user=self)[:5]
+
+    def get_private_messages(self):
+        return self.privatemessage_set.all()
+
+    @staticmethod
+    def update_current_subscription(sub):
+        sub.subscription_opened()
 
     class Meta:
         verbose_name = 'User'
